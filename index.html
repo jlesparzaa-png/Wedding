@@ -160,6 +160,26 @@
   .cover p { color: #D4AF37; font-style: italic; font-size: 1.15rem; margin: 8px 0 0; }
   .cover small { margin-top: 36px; color: var(--teal-700); font-weight: 700; }
 
+  .cover-img {
+    width: min(100%, 340px); max-height: 300px; object-fit: cover;
+    border-radius: 12px; margin-bottom: 28px;
+    border: 3px solid #D4AF37;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+
+  /* Botón Portada */
+  .home-wrap { padding: 8px 12px 16px; }
+  .home-btn {
+    width: 100%; background: rgba(255,255,255,.12); border: 1px solid #D4AF37;
+    color: #fff; font: inherit; font-weight: 700; font-size: .95rem;
+    padding: 12px 16px; border-radius: 8px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: background .2s, color .2s;
+  }
+  .home-btn svg { width: 18px; height: 18px; }
+  .home-btn:hover, .home-btn.active { background: #D4AF37; color: var(--teal-900); }
+  .home-btn:focus-visible { outline: 2px solid #00f2ff; outline-offset: 2px; }
+
   .fade { animation: fade .25s ease; }
   @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
@@ -192,6 +212,12 @@
     <p>Guía Digital y Recuerdos</p>
   </div>
   <ul class="nav" id="nav"></ul>
+  <div class="home-wrap">
+    <button class="home-btn" id="homeBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg>
+      Volver a Portada
+    </button>
+  </div>
   <div class="side-foot">Gracias por acompañarnos</div>
 </aside>
 
@@ -253,14 +279,30 @@
     const d = document.createElement("div"); d.textContent = t; return d.innerHTML;
   }
 
+  /* Imagen de la portada: coloca el archivo en la misma carpeta.
+     Si no existe, simplemente no se muestra. Déjala vacía ("") para quitarla. */
+  const IMAGEN_PORTADA = "portada.jpg";
+
   function portada() {
     main.innerHTML =
       '<div class="cover fade">' +
+        (IMAGEN_PORTADA ? '<img class="cover-img" src="' + esc(IMAGEN_PORTADA) + '" alt="Deon y José Luis">' : '') +
         '<h2>Boda de Deon &amp; José Luis</h2>' +
         '<p>Guía Digital y Recuerdos</p>' +
         '<small>Selecciona una opción del menú para comenzar</small>' +
       '</div>';
+    const ci = main.querySelector(".cover-img");
+    if (ci) ci.addEventListener("error", () => ci.remove(), { once: true });
+    marcar(null);
   }
+
+  function irAPortada() {
+    portada();
+    history.replaceState(null, "", location.pathname + location.search);
+    cerrarMenu();
+    window.scrollTo(0, 0);
+  }
+  document.getElementById("homeBtn").addEventListener("click", irAPortada);
 
   function render(s) {
     let cuerpo = "";
@@ -284,7 +326,7 @@
 
   function mostrar(id) {
     const s = SECCIONES.find(x => x.id === id);
-    if (!s) { portada(); marcar(null); return; }
+    if (!s) { portada(); return; }
     render(s);
     marcar(id);
     if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
@@ -294,6 +336,7 @@
 
   function marcar(id) {
     nav.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.id === id));
+    document.getElementById("homeBtn").classList.toggle("active", !id);
   }
 
   /* Menú móvil */
