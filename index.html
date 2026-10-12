@@ -62,6 +62,8 @@
     width: 26px; height: 26px; border-radius: 50%;
     background: rgba(255,255,255,.14); font-size: .8rem; flex: none;
   }
+  .nav button .lbl { flex: 1; }
+  .nav button .ext { width: 16px; height: 16px; flex: none; opacity: .75; }
   .nav button:hover { background: rgba(255,255,255,.1); }
   .nav button.active {
     background: rgba(255,255,255,.18);
@@ -243,10 +245,10 @@
     { id: "convivencia", titulo: "Actividades de Convivencia",
       tipo: "imagen", src: "convivencia.jpg" },
     { id: "subir", titulo: "Fotos y Videos Preferidos (Subir)",
-      tipo: "enlace", src: "https://jlesparzaa-png.github.io/FotosD-JL/", incrustar: false,
+      tipo: "enlace", src: "https://jlesparzaa-png.github.io/FotosD-JL/", incrustar: false },
     { id: "galeria", titulo: "Galería de Fotos y Videos Compartidos",
-      tipo: "enlace", src: "https://drive.google.com/drive/folders/1U3qoCxvfuoRW-2KJ-eM1ySBp4-OahXQQ?usp=sharing", incrustar: false,
-    ];
+      tipo: "enlace", src: "https://drive.google.com/drive/folders/1U3qoCxvfuoRW-2KJ-eM1ySBp4-OahXQQ?usp=sharing", incrustar: false }
+  ];
 
   const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400">' +
@@ -265,8 +267,19 @@
     const li = document.createElement("li");
     const b = document.createElement("button");
     b.dataset.id = s.id;
-    b.innerHTML = '<span class="num">' + (i + 1) + '</span><span>' + s.titulo + '</span>';
-    b.addEventListener("click", () => mostrar(s.id));
+    b.innerHTML = '<span class="num">' + (i + 1) + '</span><span class="lbl">' + s.titulo + '</span>' +
+      (s.tipo === "enlace"
+        ? '<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>'
+        : '');
+    /* Las secciones tipo "enlace" abren directamente la URL en una pestaña nueva */
+    b.addEventListener("click", () => {
+      if (s.tipo === "enlace") {
+        window.open(s.src, "_blank", "noopener");
+        cerrarMenu();
+      } else {
+        mostrar(s.id);
+      }
+    });
     li.appendChild(b);
     nav.appendChild(li);
   });
