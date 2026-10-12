@@ -14,6 +14,7 @@
             align-items: center;
             height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
         }
         .flipbook-container {
             width: 900px;
@@ -78,8 +79,7 @@
             text-decoration: none;
             font-weight: 600;
             transition: color 0.2s ease;
-            display: flex;
-            justify-content: space-between;
+            display: block; /* Cambiado para alineación simple sin número de página */
         }
         .indice-lista a:hover {
             color: #00b1c4; 
@@ -126,6 +126,30 @@
             background: linear-gradient(135deg, #007a87 0%, #00b1c4 100%);
         }
 
+        /* Botón de Retorno al Inicio */
+        .btn-inicio {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #007a87;
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-inicio:hover {
+            background: #00b1c4;
+            transform: scale(1.05);
+        }
+
         .page::-webkit-scrollbar {
             width: 6px;
         }
@@ -137,6 +161,9 @@
 </head>
 <body>
 
+    <!-- BOTÓN DE RETORNO AL INICIO -->
+    <button class="btn-inicio" onclick="irAlInicio();">🏠 Volver al Inicio</button>
+
     <!-- CONTENEDOR PRINCIPAL DEL LIBRO -->
     <div id="book" class="flipbook-container">
         
@@ -147,44 +174,38 @@
             <span style="font-size: 0.8rem; margin-top: 40px; color: #80dfe8; opacity: 0.7;">Arrastra la esquina para hojear ➔</span>
         </div>
 
-        <!-- PÁGINA 2: ÍNDICE INTERACTIVO -->
+        <!-- PÁGINA 2: ÍNDICE INTERACTIVO (Sin visualización de páginas) -->
         <div class="page">
             <h2>Tabla de Contenidos</h2>
             <ul class="indice-lista">
                 <li>
                     <a href="#" onclick="pageFlip.turnToPage(2); return false;">
                         <span>1. Agradecimientos</span>
-                        <span>Pág. 3</span>
                     </a>
                 </li>
                 <li>
                     <a href="#" onclick="pageFlip.turnToPage(3); return false;">
                         <span>2. Programa de la Boda</span>
-                        <span>Pág. 4</span>
                     </a>
                 </li>
                 <li>
                     <a href="#" onclick="pageFlip.turnToPage(4); return false;">
                         <span>3. Mesas Asignadas</span>
-                        <span>Pág. 5</span>
                     </a>
                 </li>
                 <li>
                     <a href="#" onclick="pageFlip.turnToPage(5); return false;">
                         <span>4. Actividades de Convivencia</span>
-                        <span>Pág. 6</span>
                     </a>
                 </li>
                 <li>
                     <a href="#" onclick="pageFlip.turnToPage(6); return false;">
                         <span>5. Fotos y Videos Preferidos (Subir)</span>
-                        <span>Pág. 7</span>
                     </a>
                 </li>
                 <li>
                     <a href="#" onclick="pageFlip.turnToPage(7); return false;">
                         <span>6. Galería de Fotos y Videos Compartidos</span>
-                        <span>Pág. 8</span>
                     </a>
                 </li>
             </ul>
@@ -194,8 +215,7 @@
         <div class="page">
             <h3>1. Agradecimientos</h3>
             <div class="documento-visualizador">
-                <!-- Lee la imagen guardada en tu repositorio -->
-                <img src="./agradecimiento.jpg" alt="Carta de Agradecimiento" onerror="this.src='https://placehold.co'">
+                <img src="agradecimiento.jpg" alt="Carta de Agradecimiento" onerror="this.src='https://placehold.co'">
             </div>
         </div>
 
@@ -203,7 +223,6 @@
         <div class="page">
             <h3>2. Programa de la Boda</h3>
             <div class="documento-visualizador">
-                <!-- Si es una imagen, usa <img>. Si subes un PDF cambia esto por: <iframe src="programa.pdf"></iframe> -->
                 <img src="programa.jpg" alt="Programa del Evento" onerror="this.src='https://placehold.co'">
             </div>
         </div>
@@ -212,7 +231,6 @@
         <div class="page">
             <h3>3. Mesas Asignadas</h3>
             <div class="documento-visualizador">
-                <!-- Lee tu archivo de mesas guardado en GitHub -->
                 <img src="mesas.jpg" alt="Distribución de Mesas" onerror="this.src='https://placehold.co'">
             </div>
         </div>
@@ -221,30 +239,27 @@
         <div class="page">
             <h3>4. Actividades de Convivencia</h3>
             <div class="documento-visualizador">
-                <!-- Lee tu archivo de actividades guardado en GitHub -->
                 <img src="convivencia.jpg" alt="Actividades de Convivencia" onerror="this.src='https://placehold.co'">
             </div>
         </div>
 
-        <!-- PÁGINA 7: FOTOS Y VIDEOS PREFERIDOS (Botón con Link Externo) -->
+        <!-- PÁGINA 7: FOTOS Y VIDEOS PREFERIDOS (Link Externo Directo) -->
         <div class="page" style="text-align: center;">
             <h3>5. Fotos y Videos Preferidos (Subir)</h3>
             <p style="text-align: left; margin-top: 20px;">Haz clic en el siguiente botón para ir al espacio interactivo donde podrás enviarnos tus archivos multimedia preferidos:</p>
             
-            <!-- REEMPLAZA EL LINK ENTRE COMILLAS CON TU ENLACE DE DRIVE/DROPBOX -->
-            <a href="https://jlesparzaa-png.github.io/FotosD-JL/" target="_blank" class="btn-link">➔ Ir a Subir Fotos y Videos</a>
+            <a href="https://tu-link-de-subida.com" target="_blank" class="btn-link">➔ Ir a Subir Fotos y Videos</a>
         </div>
 
-        <!-- PÁGINA 8: GALERÍA DE COMPARTIDOS (Botón con Link Externo) -->
+        <!-- PÁGINA 8: GALERÍA DE COMPARTIDOS (Link Externo Directo) -->
         <div class="page" style="text-align: center;">
             <h3>6. Galería de Fotos y Videos Compartidos</h3>
             <p style="text-align: left; margin-top: 20px;">Presiona el botón para abrir el álbum virtual completo con los momentos capturados por todos los invitados:</p>
             
-            <!-- REEMPLAZA EL LINK ENTRE COMILLAS CON TU ENLACE DEL ÁLBUM -->
-            <a href="https://drive.google.com/drive/folders/1U3qoCxvfuoRW-2KJ-eM1ySBp4-OahXQQ?usp=sharing" target="_blank" class="btn-link">➔ Ver Galería Compartida</a>
+            <a href="https://tu-link-de-galeria.com" target="_blank" class="btn-link">➔ Ver Galería Compartida</a>
         </div>
 
-        <!-- PÁGINA 9: CONTRAPORTADA -->
+        <!-- PÁGINA 9: CONTRAPORTADA (Cierre del Libro) -->
         <div class="page portada" style="background: linear-gradient(135deg, #004d55 0%, #005c66 100%);">
             <h2>¡Gracias por acompañarnos!</h2>
             <p style="color: #b3f4fa; font-size: 1rem;">Deon & José Luis</p>
