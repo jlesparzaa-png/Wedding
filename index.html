@@ -1,275 +1,313 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boda D&JL</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #0f1a1c; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            position: relative;
-        }
-        .flipbook-container {
-            width: 900px;
-            height: 600px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .page {
-            padding: 50px;
-            background-color: #f4f7f6; 
-            box-sizing: border-box;
-            border-left: 1px solid #d1dedc;
-            overflow: auto;
-            color: #1e3538; 
-        }
-        /* Portadas y Contraportadas */
-        .portada {
-            background: linear-gradient(135deg, #005c66 0%, #008b99 100%);
-            color: white;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-left: none !important;
-        }
-        .portada h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            text-transform: none; 
-            font-family: 'Playfair Display', 'Georgia', serif;
-            letter-spacing: 1px;
-            border-bottom: 3px solid #00f2ff;
-            padding-bottom: 15px;
-            width: 80%;
-        }
-        .portada p {
-            font-size: 1.2rem;
-            color: #b3f4fa;
-            font-style: italic;
-        }
-        /* Estilos del contenido e Índice */
-        h2, h3 {
-            color: #005c66; 
-            border-bottom: 2px solid #e0eceb;
-            padding-bottom: 10px;
-            margin-top: 0;
-        }
-        .indice-lista {
-            list-style: none;
-            padding: 0;
-            margin-top: 15px;
-        }
-        .indice-lista li {
-            margin: 15px 0;
-            border-bottom: 1px dashed #cededd;
-            padding-bottom: 5px;
-        }
-        .indice-lista a {
-            color: #007a87; 
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s ease;
-            display: block; /* Cambiado para alineación simple sin número de página */
-        }
-        .indice-lista a:hover {
-            color: #00b1c4; 
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boda D&JL</title>
+<style>
+  :root {
+    --bg: #0f1a1c;
+    --panel: #f4f7f6;
+    --ink: #1e3538;
+    --teal-900: #004d55;
+    --teal-700: #005c66;
+    --teal-500: #007a87;
+    --teal-300: #00b1c4;
+    --teal-100: #b3f4fa;
+    --line: #d1dedc;
+    --sidebar-w: 280px;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
 
-        /* Estilos para mostrar las imágenes/PDFs incrustados */
-        .documento-visualizador {
-            margin-top: 15px;
-            text-align: center;
-            width: 100%;
-        }
-        .documento-visualizador img {
-            max-width: 100%;
-            max-height: 380px;
-            border-radius: 4px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .documento-visualizador iframe {
-            width: 100%;
-            height: 380px;
-            border: 1px solid #cededd;
-            border-radius: 4px;
-        }
+  /* ---------- Menú lateral fijo ---------- */
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: linear-gradient(160deg, var(--teal-700) 0%, var(--teal-900) 100%);
+    color: #fff;
+    display: flex; flex-direction: column;
+    z-index: 100;
+    transition: transform .25s ease;
+  }
+  .brand {
+    padding: 32px 24px 24px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+  }
+  .brand h1 {
+    margin: 0 0 6px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.5rem; font-weight: 600; letter-spacing: .5px;
+  }
+  .brand p { margin: 0; color: var(--teal-100); font-style: italic; font-size: .9rem; }
 
-        /* Estilos para los botones de enlaces externos */
-        .btn-link {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 15px 30px;
-            background: linear-gradient(135deg, #005c66 0%, #007a87 100%);
-            color: #ffffff !important;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 25px;
-            box-shadow: 0 4px 15px rgba(0, 92, 102, 0.3);
-            transition: all 0.3s ease;
-            text-align: center;
-            width: 80%;
-            box-sizing: border-box;
-        }
-        .btn-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 177, 196, 0.5);
-            background: linear-gradient(135deg, #007a87 0%, #00b1c4 100%);
-        }
+  .nav { list-style: none; margin: 0; padding: 16px 12px; flex: 1; overflow-y: auto; }
+  .nav button {
+    width: 100%; text-align: left;
+    background: transparent; border: 0; color: #e6fbfd;
+    padding: 14px 16px; margin-bottom: 4px;
+    font: inherit; font-weight: 600; font-size: .95rem;
+    border-radius: 8px; cursor: pointer;
+    display: flex; align-items: center; gap: 12px;
+    border-left: 3px solid transparent;
+    transition: background .2s, border-color .2s;
+  }
+  .nav button .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(255,255,255,.14); font-size: .8rem; flex: none;
+  }
+  .nav button:hover { background: rgba(255,255,255,.1); }
+  .nav button.active {
+    background: rgba(255,255,255,.18);
+    border-left-color: #00f2ff;
+    color: #fff;
+  }
+  .nav button.active .num { background: #00f2ff; color: var(--teal-900); }
+  .nav button:focus-visible { outline: 2px solid #00f2ff; outline-offset: 2px; }
 
-        /* Botón de Retorno al Inicio */
-        .btn-inicio {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: #007a87;
-            color: #ffffff;
-            border: none;
-            padding: 12px 20px;
-            font-weight: bold;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-inicio:hover {
-            background: #00b1c4;
-            transform: scale(1.05);
-        }
+  .side-foot {
+    padding: 16px 24px; font-size: .8rem; color: var(--teal-100);
+    border-top: 1px solid rgba(255,255,255,.15);
+  }
 
-        .page::-webkit-scrollbar {
-            width: 6px;
-        }
-        .page::-webkit-scrollbar-thumb {
-            background-color: #007a87;
-            border-radius: 3px;
-        }
-    </style>
+  /* ---------- Barra superior móvil ---------- */
+  .topbar {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; height: 56px;
+    background: var(--teal-700); color: #fff;
+    align-items: center; gap: 12px; padding: 0 16px; z-index: 90;
+  }
+  .topbar button {
+    background: none; border: 0; color: #fff; cursor: pointer; padding: 8px;
+  }
+  .topbar svg { width: 24px; height: 24px; display: block; }
+  .topbar span { font-weight: 600; }
+  .scrim {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 95;
+  }
+
+  /* ---------- Pantalla principal ---------- */
+  main {
+    margin-left: var(--sidebar-w);
+    min-height: 100vh;
+    padding: 32px;
+    display: flex; flex-direction: column;
+  }
+  .card {
+    flex: 1;
+    background: var(--panel);
+    border-radius: 10px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.45);
+    padding: 36px 40px;
+    display: flex; flex-direction: column;
+    min-height: 0;
+  }
+  .card h2 {
+    margin: 0 0 20px; padding-bottom: 12px;
+    color: var(--teal-700);
+    border-bottom: 2px solid #e0eceb;
+    font-size: 1.6rem;
+  }
+  .card .lead { margin: 0 0 20px; line-height: 1.55; }
+
+  .viewer { flex: 1; display: flex; justify-content: center; align-items: flex-start; min-height: 0; }
+  .viewer img {
+    max-width: 100%; max-height: calc(100vh - 220px);
+    border-radius: 6px; box-shadow: 0 4px 14px rgba(0,0,0,.15);
+    object-fit: contain;
+  }
+  .viewer iframe {
+    width: 100%; height: calc(100vh - 220px); min-height: 420px;
+    border: 1px solid var(--line); border-radius: 6px; background: #fff;
+  }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+  .btn-link {
+    display: inline-block; padding: 14px 28px;
+    background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal-500) 100%);
+    color: #fff !important; text-decoration: none; font-weight: 700;
+    border-radius: 25px; box-shadow: 0 4px 15px rgba(0,92,102,.3);
+    transition: transform .2s, box-shadow .2s, background .2s;
+  }
+  .btn-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,177,196,.5);
+    background: linear-gradient(135deg, var(--teal-500) 0%, var(--teal-300) 100%);
+  }
+  .btn-link.alt {
+    background: transparent; color: var(--teal-700) !important;
+    border: 2px solid var(--teal-500); box-shadow: none;
+  }
+
+  /* ---------- Portada ---------- */
+  .cover {
+    flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; color: #fff; border-radius: 10px; padding: 40px;
+    background: linear-gradient(135deg, var(--teal-700) 0%, #008b99 100%);
+    box-shadow: 0 20px 50px rgba(0,0,0,.45);
+  }
+  .cover h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 4vw, 3.2rem); margin: 0 0 12px; font-weight: 600;
+    border-bottom: 3px solid #00f2ff; padding-bottom: 16px; color: #fff;
+  }
+  .cover p { color: var(--teal-100); font-style: italic; font-size: 1.15rem; margin: 8px 0 0; }
+  .cover small { margin-top: 36px; color: #80dfe8; opacity: .85; }
+
+  .fade { animation: fade .25s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .topbar { display: flex; }
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: none; }
+    .scrim.show { display: block; }
+    main { margin-left: 0; padding: 72px 14px 14px; }
+    .card { padding: 24px 20px; }
+    .viewer img, .viewer iframe { max-height: none; height: auto; }
+    .viewer iframe { height: 70vh; }
+  }
+</style>
 </head>
 <body>
 
-    <!-- BOTÓN DE RETORNO AL INICIO -->
-    <button class="btn-inicio" onclick="irAlInicio();">🏠 Volver al Inicio</button>
+<header class="topbar">
+  <button id="menuBtn" aria-label="Abrir menú">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+  <span>Boda D&amp;JL</span>
+</header>
+<div class="scrim" id="scrim"></div>
 
-    <!-- CONTENEDOR PRINCIPAL DEL LIBRO -->
-    <div id="book" class="flipbook-container">
-        
-        <!-- PÁGINA 1: PORTADA -->
-        <div class="page portada">
-            <h1>Boda de Deon & José Luis</h1>
-            <p>Guía Digital & Recuerdos</p>
-            <span style="font-size: 0.8rem; margin-top: 40px; color: #80dfe8; opacity: 0.7;">Arrastra la esquina para hojear ➔</span>
-        </div>
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <h1>Deon &amp; José Luis</h1>
+    <p>Guía Digital y Recuerdos</p>
+  </div>
+  <ul class="nav" id="nav"></ul>
+  <div class="side-foot">Gracias por acompañarnos</div>
+</aside>
 
-        <!-- PÁGINA 2: ÍNDICE INTERACTIVO (Sin visualización de páginas) -->
-        <div class="page">
-            <h2>Tabla de Contenidos</h2>
-            <ul class="indice-lista">
-                <li>
-                    <a href="#" onclick="pageFlip.turnToPage(2); return false;">
-                        <span>1. Agradecimientos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" onclick="pageFlip.turnToPage(3); return false;">
-                        <span>2. Programa de la Boda</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" onclick="pageFlip.turnToPage(4); return false;">
-                        <span>3. Mesas Asignadas</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" onclick="pageFlip.turnToPage(5); return false;">
-                        <span>4. Actividades de Convivencia</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" onclick="pageFlip.turnToPage(6); return false;">
-                        <span>5. Fotos y Videos Preferidos (Subir)</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" onclick="pageFlip.turnToPage(7); return false;">
-                        <span>6. Galería de Fotos y Videos Compartidos</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+<main id="main"></main>
 
-        <!-- PÁGINA 3: AGRADECIMIENTOS -->
-        <div class="page">
-            <h3>1. Agradecimientos</h3>
-            <div class="documento-visualizador">
-                <img src="agradecimiento.jpg" alt="Carta de Agradecimiento" onerror="this.src='https://placehold.co'">
-            </div>
-        </div>
+<script>
+  /* ============================================================
+     CONFIGURACIÓN DE SECCIONES
+     tipo: "imagen" | "pdf" | "enlace"
+     - imagen: src = ruta del archivo (jpg, png, etc.)
+     - pdf:    src = ruta del PDF (se muestra incrustado)
+     - enlace: src = URL externa; incrustar:true intenta mostrarla
+               dentro de la pantalla (algunos sitios lo bloquean,
+               por eso siempre hay botón para abrir en pestaña nueva)
+     ============================================================ */
+  const SECCIONES = [
+    { id: "agradecimientos", titulo: "Agradecimientos",
+      tipo: "imagen", src: "agradecimiento.jpg" },
+    { id: "programa", titulo: "Programa de la Boda",
+      tipo: "imagen", src: "programa.jpg" },
+    { id: "mesas", titulo: "Mesas Asignadas",
+      tipo: "imagen", src: "mesas.jpg" },
+    { id: "convivencia", titulo: "Actividades de Convivencia",
+      tipo: "imagen", src: "convivencia.jpg" },
+    { id: "subir", titulo: "Fotos y Videos Preferidos (Subir)",
+      tipo: "enlace", src: "https://jlesparzaa-png.github.io/FotosD-JL/", incrustar: false,
+      texto: "Usa el siguiente botón para ir al espacio donde podrás enviarnos tus fotos y videos preferidos.",
+      boton: "Ir a subir fotos y videos" },
+    { id: "galeria", titulo: "Galería de Fotos y Videos Compartidos",
+      tipo: "enlace", src: "https://drive.google.com/drive/folders/1U3qoCxvfuoRW-2KJ-eM1ySBp4-OahXQQ?usp=sharing", incrustar: false,
+      texto: "Abre el álbum virtual con los momentos capturados por todos los invitados.",
+      boton: "Ver galería compartida" }
+  ];
 
-        <!-- PÁGINA 4: PROGRAMA DE LA BODA -->
-        <div class="page">
-            <h3>2. Programa de la Boda</h3>
-            <div class="documento-visualizador">
-                <img src="programa.jpg" alt="Programa del Evento" onerror="this.src='https://placehold.co'">
-            </div>
-        </div>
+  const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400">' +
+    '<rect width="100%" height="100%" fill="#e0eceb"/>' +
+    '<text x="50%" y="50%" fill="#007a87" font-family="Segoe UI,Arial" font-size="20" ' +
+    'text-anchor="middle" dominant-baseline="middle">Archivo no encontrado</text></svg>'
+  );
 
-        <!-- PÁGINA 5: MESAS ASIGNADAS -->
-        <div class="page">
-            <h3>3. Mesas Asignadas</h3>
-            <div class="documento-visualizador">
-                <img src="mesas.jpg" alt="Distribución de Mesas" onerror="this.src='https://placehold.co'">
-            </div>
-        </div>
+  const nav = document.getElementById("nav");
+  const main = document.getElementById("main");
+  const sidebar = document.getElementById("sidebar");
+  const scrim = document.getElementById("scrim");
 
-        <!-- PÁGINA 6: ACTIVIDADES DE CONVIVENCIA -->
-        <div class="page">
-            <h3>4. Actividades de Convivencia</h3>
-            <div class="documento-visualizador">
-                <img src="convivencia.jpg" alt="Actividades de Convivencia" onerror="this.src='https://placehold.co'">
-            </div>
-        </div>
+  /* Construir menú */
+  SECCIONES.forEach((s, i) => {
+    const li = document.createElement("li");
+    const b = document.createElement("button");
+    b.dataset.id = s.id;
+    b.innerHTML = '<span class="num">' + (i + 1) + '</span><span>' + s.titulo + '</span>';
+    b.addEventListener("click", () => mostrar(s.id));
+    li.appendChild(b);
+    nav.appendChild(li);
+  });
 
-        <!-- PÁGINA 7: FOTOS Y VIDEOS PREFERIDOS (Link Externo Directo) -->
-        <div class="page" style="text-align: center;">
-            <h3>5. Fotos y Videos Preferidos (Subir)</h3>
-            <p style="text-align: left; margin-top: 20px;">Haz clic en el siguiente botón para ir al espacio interactivo donde podrás enviarnos tus archivos multimedia preferidos:</p>
-            
-            <a href="https://tu-link-de-subida.com" target="_blank" class="btn-link">➔ Ir a Subir Fotos y Videos</a>
-        </div>
+  function esc(t) {
+    const d = document.createElement("div"); d.textContent = t; return d.innerHTML;
+  }
 
-        <!-- PÁGINA 8: GALERÍA DE COMPARTIDOS (Link Externo Directo) -->
-        <div class="page" style="text-align: center;">
-            <h3>6. Galería de Fotos y Videos Compartidos</h3>
-            <p style="text-align: left; margin-top: 20px;">Presiona el botón para abrir el álbum virtual completo con los momentos capturados por todos los invitados:</p>
-            
-            <a href="https://tu-link-de-galeria.com" target="_blank" class="btn-link">➔ Ver Galería Compartida</a>
-        </div>
+  function portada() {
+    main.innerHTML =
+      '<div class="cover fade">' +
+        '<h2>Boda de Deon &amp; José Luis</h2>' +
+        '<p>Guía Digital y Recuerdos</p>' +
+        '<small>Selecciona una opción del menú para comenzar</small>' +
+      '</div>';
+  }
 
-        <!-- PÁGINA 9: CONTRAPORTADA (Cierre del Libro) -->
-        <div class="page portada" style="background: linear-gradient(135deg, #004d55 0%, #005c66 100%);">
-            <h2>¡Gracias por acompañarnos!</h2>
-            <p style="color: #b3f4fa; font-size: 1rem;">Deon & José Luis</p>
-        </div>
+  function render(s) {
+    let cuerpo = "";
+    if (s.tipo === "imagen") {
+      cuerpo = '<div class="viewer"><img src="' + esc(s.src) + '" alt="' + esc(s.titulo) + '"></div>';
+    } else if (s.tipo === "pdf") {
+      cuerpo = '<div class="viewer"><iframe src="' + esc(s.src) + '" title="' + esc(s.titulo) + '"></iframe></div>' +
+               '<div class="actions"><a class="btn-link alt" href="' + esc(s.src) + '" target="_blank" rel="noopener">Abrir en pestaña nueva</a></div>';
+    } else {
+      cuerpo = '<p class="lead">' + esc(s.texto || "") + '</p>' +
+               '<div class="actions"><a class="btn-link" href="' + esc(s.src) + '" target="_blank" rel="noopener">' + esc(s.boton || "Abrir enlace") + '</a></div>';
+      if (s.incrustar) {
+        cuerpo += '<div class="viewer" style="margin-top:20px"><iframe src="' + esc(s.src) + '" title="' + esc(s.titulo) + '"></iframe></div>';
+      }
+    }
+    main.innerHTML = '<section class="card fade"><h2>' + esc(s.titulo) + '</h2>' + cuerpo + '</section>';
 
-    </div>
+    const img = main.querySelector("img");
+    if (img) img.addEventListener("error", () => { img.src = PLACEHOLDER; }, { once: true });
+  }
 
-    <!-- Carga de la librería oficial de PageFlip -->
-    <script src="https://jsdelivr.net"></script>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const bookElement = document.getElementById('book');
+  function mostrar(id) {
+    const s = SECCIONES.find(x => x.id === id);
+    if (!s) { portada(); marcar(null); return; }
+    render(s);
+    marcar(id);
+    if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
+    cerrarMenu();
+    window.scrollTo(0, 0);
+  }
+
+  function marcar(id) {
+    nav.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.id === id));
+  }
+
+  /* Menú móvil */
+  function abrirMenu() { sidebar.classList.add("open"); scrim.classList.add("show"); }
+  function cerrarMenu() { sidebar.classList.remove("open"); scrim.classList.remove("show"); }
+  document.getElementById("menuBtn").addEventListener("click", abrirMenu);
+  scrim.addEventListener("click", cerrarMenu);
+
+  /* Navegación con el hash de la URL (permite compartir enlaces directos) */
+  window.addEventListener("hashchange", () => mostrar(location.hash.slice(1)));
+
+  /* Inicio */
+  const inicial = location.hash.slice(1);
+  if (SECCIONES.some(s => s.id === inicial)) mostrar(inicial); else portada();
+</script>
+</body>
+</html>
