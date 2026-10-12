@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boda D&JL - Teal Edition</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f1a1c; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .flipbook-container {
+            width: 900px;
+            height: 600px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .page {
+            padding: 50px;
+            background-color: #f4f7f6; 
+            box-sizing: border-box;
+            border-left: 1px solid #d1dedc;
+            overflow: auto;
+            color: #1e3538; 
+        }
+        /* Portadas y Contraportadas */
+        .portada {
+            background: linear-gradient(135deg, #005c66 0%, #008b99 100%);
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-left: none !important;
+        }
+        .portada h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-transform: none; 
+            font-family: 'Playfair Display', 'Georgia', serif;
+            letter-spacing: 1px;
+            border-bottom: 3px solid #00f2ff;
+            padding-bottom: 15px;
+            width: 80%;
+        }
+        .portada p {
+            font-size: 1.2rem;
+            color: #b3f4fa;
+            font-style: italic;
+        }
+        /* Estilos del contenido e Índice */
+        h2, h3 {
+            color: #005c66; 
+            border-bottom: 2px solid #e0eceb;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .indice-lista {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+        .indice-lista li {
+            margin: 15px 0;
+            border-bottom: 1px dashed #cededd;
+            padding-bottom: 5px;
+        }
+        .indice-lista a {
+            color: #007a87; 
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+        }
+        .indice-lista a:hover {
+            color: #00b1c4; 
+        }
+
+        /* Estilos para mostrar las imágenes/PDFs incrustados */
+        .documento-visualizador {
+            margin-top: 15px;
+            text-align: center;
+            width: 100%;
+        }
+        .documento-visualizador img {
+            max-width: 100%;
+            max-height: 380px;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .documento-visualizador iframe {
+            width: 100%;
+            height: 380px;
+            border: 1px solid #cededd;
+            border-radius: 4px;
+        }
+
+        /* Estilos para los botones de enlaces externos */
+        .btn-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #005c66 0%, #007a87 100%);
+            color: #ffffff !important;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0, 92, 102, 0.3);
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 80%;
+            box-sizing: border-box;
+        }
+        .btn-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 177, 196, 0.5);
+            background: linear-gradient(135deg, #007a87 0%, #00b1c4 100%);
+        }
+
+        .page::-webkit-scrollbar {
+            width: 6px;
+        }
+        .page::-webkit-scrollbar-thumb {
+            background-color: #007a87;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CONTENEDOR PRINCIPAL DEL LIBRO -->
+    <div id="book" class="flipbook-container">
+        
+        <!-- PÁGINA 1: PORTADA -->
+        <div class="page portada">
+            <h1>Boda de Deon & José Luis</h1>
+            <p>Guía Digital & Recuerdos</p>
+            <span style="font-size: 0.8rem; margin-top: 40px; color: #80dfe8; opacity: 0.7;">Arrastra la esquina para hojear ➔</span>
+        </div>
+
+        <!-- PÁGINA 2: ÍNDICE INTERACTIVO -->
+        <div class="page">
+            <h2>Tabla de Contenidos</h2>
+            <ul class="indice-lista">
+                <li>
+                    <a href="#" onclick="pageFlip.turnToPage(2); return false;">
+                        <span>1. Agradecimientos</span>
+                        <span>Pág. 3</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="pageFlip.turnToPage(3); return false;">
+                        <span>2. Programa de la Boda</span>
+                        <span>Pág. 4</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="pageFlip.turnToPage(4); return false;">
+                        <span>3. Mesas Asignadas</span>
+                        <span>Pág. 5</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="pageFlip.turnToPage(5); return false;">
+                        <span>4. Actividades de Convivencia</span>
+                        <span>Pág. 6</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="pageFlip.turnToPage(6); return false;">
+                        <span>5. Fotos y Videos Preferidos (Subir)</span>
+                        <span>Pág. 7</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="pageFlip.turnToPage(7); return false;">
+                        <span>6. Galería de Fotos y Videos Compartidos</span>
+                        <span>Pág. 8</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- PÁGINA 3: AGRADECIMIENTOS -->
+        <div class="page">
+            <h3>1. Agradecimientos</h3>
+            <div class="documento-visualizador">
+                <!-- Lee la imagen guardada en tu repositorio -->
+                <img src="agradecimiento.jpg" alt="Carta de Agradecimiento" onerror="this.src='https://placehold.co'">
+            </div>
+        </div>
+
+        <!-- PÁGINA 4: PROGRAMA DE LA BODA -->
+        <div class="page">
+            <h3>2. Programa de la Boda</h3>
+            <div class="documento-visualizador">
+                <!-- Si es una imagen, usa <img>. Si subes un PDF cambia esto por: <iframe src="programa.pdf"></iframe> -->
+                <img src="programa.jpg" alt="Programa del Evento" onerror="this.src='https://placehold.co'">
+            </div>
+        </div>
+
+        <!-- PÁGINA 5: MESAS ASIGNADAS -->
+        <div class="page">
+            <h3>3. Mesas Asignadas</h3>
+            <div class="documento-visualizador">
+                <!-- Lee tu archivo de mesas guardado en GitHub -->
+                <img src="mesas.jpg" alt="Distribución de Mesas" onerror="this.src='https://placehold.co'">
+            </div>
+        </div>
+
+        <!-- PÁGINA 6: ACTIVIDADES DE CONVIVENCIA -->
+        <div class="page">
+            <h3>4. Actividades de Convivencia</h3>
+            <div class="documento-visualizador">
+                <!-- Lee tu archivo de actividades guardado en GitHub -->
+                <img src="convivencia.jpg" alt="Actividades de Convivencia" onerror="this.src='https://placehold.co'">
+            </div>
+        </div>
+
+        <!-- PÁGINA 7: FOTOS Y VIDEOS PREFERIDOS (Botón con Link Externo) -->
+        <div class="page" style="text-align: center;">
+            <h3>5. Fotos y Videos Preferidos (Subir)</h3>
+            <p style="text-align: left; margin-top: 20px;">Haz clic en el siguiente botón para ir al espacio interactivo donde podrás enviarnos tus archivos multimedia preferidos:</p>
+            
+            <!-- REEMPLAZA EL LINK ENTRE COMILLAS CON TU ENLACE DE DRIVE/DROPBOX -->
+            <a href="https://tu-link-aqui.com" target="_blank" class="btn-link">➔ Ir a Subir Fotos y Videos</a>
+        </div>
+
+        <!-- PÁGINA 8: GALERÍA DE COMPARTIDOS (Botón con Link Externo) -->
+        <div class="page" style="text-align: center;">
+            <h3>6. Galería de Fotos y Videos Compartidos</h3>
+            <p style="text-align: left; margin-top: 20px;">Presiona el botón para abrir el álbum virtual completo con los momentos capturados por todos los invitados:</p>
+            
+            <!-- REEMPLAZA EL LINK ENTRE COMILLAS CON TU ENLACE DEL ÁLBUM -->
+            <a href="https://tu-segundo-link-aqui.com" target="_blank" class="btn-link">➔ Ver Galería Compartida</a>
+        </div>
+
+        <!-- PÁGINA 9: CONTRAPORTADA -->
+        <div class="page portada" style="background: linear-gradient(135deg, #004d55 0%, #005c66 100%);">
+            <h2>¡Gracias por acompañarnos!</h2>
+            <p style="color: #b3f4fa; font-size: 1rem;">Deon & José Luis</p>
+        </div>
+
+    </div>
+
+    <!-- Carga de la librería oficial de PageFlip -->
+    <script src="https://jsdelivr.net"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const bookElement = document.getElementById('book');
